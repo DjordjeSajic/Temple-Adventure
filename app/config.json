@@ -4,8 +4,8 @@
     }
   },
   "window": {
-    "height": 600,
-    "title": "Hello, window!",
-    "width": 800
+    "height": 900,
+    "title": "Temple Adventure",
+    "width": 1600
   }
 }
