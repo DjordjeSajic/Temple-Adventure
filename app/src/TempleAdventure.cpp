@@ -4,10 +4,13 @@
 
 #include "../include/TempleAdventure.hpp"
 
+#include <ApplicationController.hpp>
 #include <spdlog/spdlog.h>
 
 namespace app {
     void TempleAdventure::app_setup() {
         spdlog::info("App setup works for Temple Adventure");
+        auto application_controller = register_controller<app::ApplicationController>();
+        application_controller->after(engine::core::Controller::get<engine::core::EngineControllersEnd>());
     }
 } // app
