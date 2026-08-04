@@ -10,6 +10,8 @@ add_executable(${PROJECT_NAME} ${sources} ${headers}
         include/TempleAdventure.hpp
         src/ApplicationController.cpp
         include/ApplicationController.hpp
+        src/SceneController.cpp
+        include/SceneController.hpp
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE matf-rg-engine)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
