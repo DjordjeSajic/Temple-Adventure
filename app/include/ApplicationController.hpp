@@ -8,6 +8,8 @@
 
 namespace app {
     class ApplicationController : public engine::core::Controller {
+        bool loop() override;
+
     public:
         std::string_view name() const override {
             return "app::ApplicationController";
