@@ -1,6 +1,9 @@
 {
   "resources": {
     "models": {
+      "torch": {
+        "path": "torch/torch.gltf"
+      }
     }
   },
   "window": {
