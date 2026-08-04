@@ -5,6 +5,7 @@
 #include "../include/TempleAdventure.hpp"
 
 #include <ApplicationController.hpp>
+#include <SceneController.hpp>
 #include <spdlog/spdlog.h>
 
 namespace app {
@@ -12,5 +13,8 @@ namespace app {
         spdlog::info("App setup works for Temple Adventure");
         auto application_controller = register_controller<app::ApplicationController>();
         application_controller->after(engine::core::Controller::get<engine::core::EngineControllersEnd>());
+
+        auto scene_controller = register_controller<app::SceneController>();
+        scene_controller->after(engine::core::Controller::get<engine::core::EngineControllersEnd>());
     }
 } // app
