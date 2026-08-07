@@ -33,6 +33,14 @@ uniform vec3 material_diffuse;
 uniform bool hasTexture;
 
 void main() {
-    // FORCE material_diffuse output directly to test
-    FragColor = vec4(material_diffuse, 1.0);
+    vec3 baseColor;
+
+    // Pick texture if available, otherwise fallback to material diffuse color
+    if (hasTexture) {
+        baseColor = texture(texture_diffuse1, TexCoords).rgb;
+    } else {
+        baseColor = material_diffuse;
+    }
+
+    FragColor = vec4(baseColor, 1.0);
 }
