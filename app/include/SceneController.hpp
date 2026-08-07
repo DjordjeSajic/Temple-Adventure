@@ -15,6 +15,14 @@ namespace app {
 
     private:
         void initialize() override;
+
+        void begin_draw() override;
+
+        void draw_torch();
+
+        void draw() override;
+
+        void end_draw() override;
     };
 } // app
 
