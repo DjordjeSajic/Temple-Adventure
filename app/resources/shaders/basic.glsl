@@ -29,7 +29,10 @@ out vec4 FragColor;
 in vec2 TexCoords;
 
 uniform sampler2D texture_diffuse1;
+uniform vec3 material_diffuse;
+uniform bool hasTexture;
 
 void main() {
-    FragColor = vec4(texture(texture_diffuse1, TexCoords).rgb, 1.0);
+    // FORCE material_diffuse output directly to test
+    FragColor = vec4(material_diffuse, 1.0);
 }
