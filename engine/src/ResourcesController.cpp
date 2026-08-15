@@ -242,9 +242,7 @@ namespace engine::resources {
         if (material->Get(AI_MATKEY_COLOR_DIFFUSE, color) == AI_SUCCESS) {
             diffuse_color = glm::vec3(color.r, color.g, color.b);
         }
-        //Log color values
-        spdlog::info("[Assimp] Mesh loaded with color: ({}, {}, {})", diffuse_color.r, diffuse_color.g,
-                     diffuse_color.b);
+        
         m_meshes.emplace_back(Mesh(vertices, indices, std::move(textures), diffuse_color));
     }
 
