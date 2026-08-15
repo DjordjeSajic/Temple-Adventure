@@ -15,15 +15,18 @@ namespace app {
 
     void PlayerPlatfromEventObserver::on_mouse_move(engine::platform::MousePosition position) {
         auto camera = engine::core::Controller::get<engine::graphics::GraphicsController>()->camera();
-        camera->rotate_camera(position.dx, position.dy);
+        camera->rotate_camera(position.dx * 0.5f, position.dy * 0.5f);
     }
 
     void PlayerController::initialize() {
         spdlog::info("PlayerController::initialize");
 
         auto player_observer = std::make_unique<PlayerPlatfromEventObserver>();
-        engine::core::Controller::get<engine::platform::PlatformController>()->register_platform_event_observer(
-            std::move(player_observer));
+        auto platform        = engine::core::Controller::get<engine::platform::PlatformController>();
+
+        platform->register_platform_event_observer(std::move(player_observer));
+
+        platform->set_enable_cursor(false);
     }
 
     void PlayerController::player_movement_keyboard() {
