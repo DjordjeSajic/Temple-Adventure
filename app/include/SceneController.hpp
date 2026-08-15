@@ -22,6 +22,8 @@ namespace app {
 
         void draw_temple();
 
+        void draw_jungle();
+
         void draw() override;
 
         void end_draw() override;

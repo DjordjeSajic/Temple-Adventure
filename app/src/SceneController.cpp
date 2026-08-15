@@ -56,14 +56,33 @@ namespace app {
         temple_shader->set_mat4("projection", graphics->projection_matrix());
         temple_shader->set_mat4("view", graphics->camera()->view_matrix());
         glm::mat4 model = glm::mat4(1.0f);
-        model           = glm::translate(model, glm::vec3(0.0f, 0.0f, -10.0f));
-        model           = glm::scale(model, glm::vec3(10.0f));
+        model           = glm::translate(model, glm::vec3(17.0f, 0.8f, 8.5f));
+        model           = glm::scale(model, glm::vec3(18.0f));
         temple_shader->set_mat4("model", model);
 
         temple_model->draw(temple_shader);
     }
 
+    void SceneController::draw_jungle() {
+        auto resources = engine::core::Controller::get<engine::resources::ResourcesController>();
+        auto graphics  = engine::core::Controller::get<engine::graphics::GraphicsController>();
+
+        engine::resources::Model *jungle_model   = resources->model("jungle");
+        engine::resources::Shader *jungle_shader = resources->shader("basic");
+
+        jungle_shader->use();
+        jungle_shader->set_mat4("projection", graphics->projection_matrix());
+        jungle_shader->set_mat4("view", graphics->camera()->view_matrix());
+        glm::mat4 model = glm::mat4(1.0f);
+        model           = glm::translate(model, glm::vec3(5.0f, 0.0f, 5.0f));
+        model           = glm::scale(model, glm::vec3(10.0f));
+        jungle_shader->set_mat4("model", model);
+
+        jungle_model->draw(jungle_shader);
+    }
+
     void SceneController::draw() {
+        draw_jungle();
         draw_temple();
         //draw_torch must always be last to be drawn because of depth buffer clearing
         draw_torch();

@@ -6,6 +6,9 @@
       },
       "temple": {
         "path": "temple/temple.obj"
+      },
+      "jungle": {
+        "path": "jungle/jungle.obj"
       }
     }
   },
