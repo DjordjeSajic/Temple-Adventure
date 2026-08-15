@@ -19,8 +19,15 @@ namespace app {
 
     void SceneController::draw_torch() {
         auto resources = engine::core::Controller::get<engine::resources::ResourcesController>();
-        auto graphics = engine::core::Controller::get<engine::graphics::GraphicsController>();
-        engine::resources::Model *torch_model = resources->model("torch");
+        auto graphics  = engine::core::Controller::get<engine::graphics::GraphicsController>();
+        auto platform  = engine::core::Controller::get<engine::platform::PlatformController>();
+
+        float time                              = platform->frame_time().current;
+        constexpr float sway_amount             = 0.05f;
+        constexpr float sway_speed              = 1.5f;
+        const float offset_x                    = sin(time * sway_speed) * sway_amount;
+        const float offset_y                    = cos(time * (sway_speed * 2.0f)) * (sway_amount * 0.5f);
+        engine::resources::Model *torch_model   = resources->model("torch");
         engine::resources::Shader *torch_shader = resources->shader("basic");
 
         graphics->clear_depth_buffer();
@@ -31,7 +38,7 @@ namespace app {
         torch_shader->set_mat4("view", view);
 
         glm::mat4 model = glm::mat4(1.0f);
-        model           = glm::translate(model, glm::vec3(1.3f, -1.5f, -3.0f));
+        model           = glm::translate(model, glm::vec3(1.3f + offset_x, -1.5f + offset_y, -3.0f));
         model           = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         model           = glm::scale(model, glm::vec3(0.8f));
         torch_shader->set_mat4("model", model);
@@ -43,7 +50,7 @@ namespace app {
         auto graphics  = engine::core::Controller::get<engine::graphics::GraphicsController>();
 
         engine::resources::Model *temple_model   = resources->model("temple");
-        engine::resources::Shader *temple_shader = resources->shader("basic");
+        engine::resources::Shader *temple_shader = resources->shader("basic_light_tester");
 
         temple_shader->use();
         temple_shader->set_mat4("projection", graphics->projection_matrix());
