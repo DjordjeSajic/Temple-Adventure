@@ -3,12 +3,15 @@
     "models": {
       "torch": {
         "path": "torch/torch.obj"
+      },
+      "temple": {
+        "path": "temple/temple.obj"
       }
     }
   },
   "window": {
-    "height": 900,
+    "height": 1080,
     "title": "Temple Adventure",
-    "width": 1600
+    "width": 1920
   }
 }
