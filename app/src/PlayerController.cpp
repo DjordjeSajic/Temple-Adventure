@@ -15,7 +15,7 @@ namespace app {
 
     void PlayerPlatfromEventObserver::on_mouse_move(engine::platform::MousePosition position) {
         auto camera = engine::core::Controller::get<engine::graphics::GraphicsController>()->camera();
-        camera->rotate_camera(position.dx * 0.5f, position.dy * 0.5f);
+        camera->rotate_camera(position.dx, position.dy);
     }
 
     void PlayerController::initialize() {
