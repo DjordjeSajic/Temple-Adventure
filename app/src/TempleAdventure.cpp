@@ -16,9 +16,9 @@ namespace app {
         application_controller->after(engine::core::Controller::get<engine::core::EngineControllersEnd>());
 
         auto scene_controller = register_controller<app::SceneController>();
-        scene_controller->after(engine::core::Controller::get<engine::core::EngineControllersEnd>());
+        scene_controller->after(application_controller);
 
         auto player_controller = register_controller<app::PlayerController>();
-        scene_controller->after(engine::core::Controller::get<engine::core::EngineControllersEnd>());
+        player_controller->after(scene_controller);
     }
 } // app
