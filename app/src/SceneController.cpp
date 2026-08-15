@@ -50,7 +50,7 @@ namespace app {
         auto graphics  = engine::core::Controller::get<engine::graphics::GraphicsController>();
 
         engine::resources::Model *temple_model   = resources->model("temple");
-        engine::resources::Shader *temple_shader = resources->shader("basic_light_tester");
+        engine::resources::Shader *temple_shader = resources->shader("basic");
 
         temple_shader->use();
         temple_shader->set_mat4("projection", graphics->projection_matrix());
