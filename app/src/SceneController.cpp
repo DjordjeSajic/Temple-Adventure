@@ -81,9 +81,18 @@ namespace app {
         jungle_model->draw(jungle_shader);
     }
 
+    void SceneController::draw_skybox() {
+        auto resources = engine::core::Controller::get<engine::resources::ResourcesController>();
+        auto skybox    = resources->skybox("day_skybox");
+        auto shader    = resources->shader("skybox");
+        auto graphics  = engine::core::Controller::get<engine::graphics::GraphicsController>();
+        graphics->draw_skybox(shader, skybox);
+    }
+
     void SceneController::draw() {
         draw_jungle();
         draw_temple();
+        draw_skybox();
         //draw_torch must always be last to be drawn because of depth buffer clearing
         draw_torch();
     }
