@@ -8,8 +8,6 @@
 
 namespace app {
     class GuiController : public engine::core::Controller {
-
-
     public:
         std::string_view name() const override {
             return "app::GuiController";
@@ -17,8 +15,16 @@ namespace app {
 
     private:
         void initialize() override;
+
         void poll_events() override;
+
         void draw() override;
+
+        void set_gui_exit_game_flag();
+
+        bool loop() override;
+
+        bool m_gui_exit_game = false;
     };
 } // app
 

@@ -25,8 +25,27 @@ namespace app {
 
         ImGui::Begin("Temple adventure - menu");
 
+        if (ImGui::Button("Continue", ImVec2(120, 30))) {
+            set_enable(!is_enabled());
+        }
+
+        if (ImGui::Button("Exit Game", ImVec2(120, 30))) {
+            set_gui_exit_game_flag();
+        }
+
         ImGui::End();
 
         graphics->end_gui();
+    }
+
+    void GuiController::set_gui_exit_game_flag() {
+        m_gui_exit_game = true;
+    }
+
+    bool GuiController::loop() {
+        if (m_gui_exit_game) {
+            return false;
+        }
+        return true;
     }
 } // app
