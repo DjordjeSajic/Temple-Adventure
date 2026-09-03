@@ -15,18 +15,21 @@ namespace app {
     void GuiController::poll_events() {
         auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
         if (platform->key(engine::platform::KeyId::KEY_TAB).state() == engine::platform::Key::State::JustPressed) {
-            set_enable(!is_enabled());
+            set_enable(true);
+            platform->set_enable_cursor(true);
         }
     }
 
     void GuiController::draw() {
         auto graphics = engine::core::Controller::get<engine::graphics::GraphicsController>();
+        auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
         graphics->begin_gui();
 
         ImGui::Begin("Temple adventure - menu");
 
         if (ImGui::Button("Continue", ImVec2(120, 30))) {
             set_enable(!is_enabled());
+            platform->set_enable_cursor(false);
         }
 
         if (ImGui::Button("Exit Game", ImVec2(120, 30))) {

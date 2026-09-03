@@ -29,39 +29,38 @@ namespace app {
         auto platform        = engine::core::Controller::get<engine::platform::PlatformController>();
 
         platform->register_platform_event_observer(std::move(player_observer));
+        platform->set_enable_cursor(false);
     }
 
     void PlayerController::player_movement_keyboard() {
         auto gui_controller = engine::core::Controller::get<GuiController>();
-        auto platfrom       = engine::core::Controller::get<engine::platform::PlatformController>();
+
         if (gui_controller->is_enabled()) {
-            platfrom->set_enable_cursor(true);
             return;
-        } else {
-            platfrom->set_enable_cursor(false);
         }
+        auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
         auto graphics = engine::core::Controller::get<engine::graphics::GraphicsController>();
         auto camera   = graphics->camera();
-        float dt      = platfrom->dt();
-        if (platfrom->key(engine::platform::KeyId::KEY_W).is_down()) {
+        float dt      = platform->dt();
+        if (platform->key(engine::platform::KeyId::KEY_W).is_down()) {
             camera->move_camera(engine::graphics::Camera::Movement::FORWARD, dt);
         }
 
-        if (platfrom->key(engine::platform::KeyId::KEY_S).is_down()) {
+        if (platform->key(engine::platform::KeyId::KEY_S).is_down()) {
             camera->move_camera(engine::graphics::Camera::Movement::BACKWARD, dt);
         }
 
-        if (platfrom->key(engine::platform::KeyId::KEY_A).is_down()) {
+        if (platform->key(engine::platform::KeyId::KEY_A).is_down()) {
             camera->move_camera(engine::graphics::Camera::Movement::LEFT, dt);
         }
 
-        if (platfrom->key(engine::platform::KeyId::KEY_D).is_down()) {
+        if (platform->key(engine::platform::KeyId::KEY_D).is_down()) {
             camera->move_camera(engine::graphics::Camera::Movement::RIGHT, dt * 0.75);
         }
-        if (platfrom->key(engine::platform::KeyId::KEY_SPACE).is_down()) {
+        if (platform->key(engine::platform::KeyId::KEY_SPACE).is_down()) {
             camera->move_camera(engine::graphics::Camera::Movement::UP, dt * 0.50);
         }
-        if (platfrom->key(engine::platform::KeyId::KEY_LEFT_CONTROL).is_down()) {
+        if (platform->key(engine::platform::KeyId::KEY_LEFT_CONTROL).is_down()) {
             camera->move_camera(engine::graphics::Camera::Movement::DOWN, dt * 0.50);
         }
     }
