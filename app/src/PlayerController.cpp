@@ -58,6 +58,12 @@ namespace app {
         if (platfrom->key(engine::platform::KeyId::KEY_D).is_down()) {
             camera->move_camera(engine::graphics::Camera::Movement::RIGHT, dt * 0.75);
         }
+        if (platfrom->key(engine::platform::KeyId::KEY_SPACE).is_down()) {
+            camera->move_camera(engine::graphics::Camera::Movement::UP, dt * 0.50);
+        }
+        if (platfrom->key(engine::platform::KeyId::KEY_LEFT_CONTROL).is_down()) {
+            camera->move_camera(engine::graphics::Camera::Movement::DOWN, dt * 0.50);
+        }
     }
 
     void PlayerController::update() {
