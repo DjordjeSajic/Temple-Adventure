@@ -13,6 +13,14 @@ namespace app {
             return "app::SceneController";
         }
 
+        static void set_current_skybox(const std::string &skybox_name) {
+            s_current_skybox = skybox_name;
+        }
+
+        static std::string get_current_skybox() {
+            return s_current_skybox;
+        }
+
     private:
         void initialize() override;
 
@@ -29,6 +37,8 @@ namespace app {
         void draw() override;
 
         void end_draw() override;
+
+        inline static std::string s_current_skybox = "day_skybox";
     };
 } // app
 

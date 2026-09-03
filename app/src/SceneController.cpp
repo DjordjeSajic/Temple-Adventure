@@ -83,7 +83,7 @@ namespace app {
 
     void SceneController::draw_skybox() {
         auto resources = engine::core::Controller::get<engine::resources::ResourcesController>();
-        auto skybox    = resources->skybox("day_skybox");
+        auto skybox    = resources->skybox(get_current_skybox());
         auto shader    = resources->shader("skybox");
         auto graphics  = engine::core::Controller::get<engine::graphics::GraphicsController>();
         graphics->draw_skybox(shader, skybox);
