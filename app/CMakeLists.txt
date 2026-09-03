@@ -14,6 +14,8 @@ add_executable(${PROJECT_NAME} ${sources} ${headers}
         include/SceneController.hpp
         src/PlayerController.cpp
         include/PlayerController.hpp
+        src/GuiController.cpp
+        include/GuiController.hpp
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE matf-rg-engine)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)

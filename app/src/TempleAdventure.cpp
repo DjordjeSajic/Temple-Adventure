@@ -5,6 +5,7 @@
 #include "../include/TempleAdventure.hpp"
 
 #include <ApplicationController.hpp>
+#include <GuiController.hpp>
 #include <PlayerController.hpp>
 #include <SceneController.hpp>
 #include <spdlog/spdlog.h>
@@ -20,5 +21,8 @@ namespace app {
 
         auto player_controller = register_controller<app::PlayerController>();
         player_controller->after(scene_controller);
+
+        auto gui_controller = register_controller<app::GuiController>();
+        gui_controller->after(player_controller);
     }
 } // app

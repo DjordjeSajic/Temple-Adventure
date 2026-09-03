@@ -4,6 +4,7 @@
 
 #include "../include/PlayerController.hpp"
 
+#include <GuiController.hpp>
 #include <engine/graphics/GraphicsController.hpp>
 #include <spdlog/spdlog.h>
 
@@ -14,8 +15,11 @@ namespace app {
     };
 
     void PlayerPlatfromEventObserver::on_mouse_move(engine::platform::MousePosition position) {
-        auto camera = engine::core::Controller::get<engine::graphics::GraphicsController>()->camera();
-        camera->rotate_camera(position.dx, position.dy);
+        auto gui_controller = engine::core::Controller::get<GuiController>();
+        if (!gui_controller->is_enabled()) {
+            auto camera = engine::core::Controller::get<engine::graphics::GraphicsController>()->camera();
+            camera->rotate_camera(position.dx, position.dy);
+        }
     }
 
     void PlayerController::initialize() {
@@ -25,12 +29,17 @@ namespace app {
         auto platform        = engine::core::Controller::get<engine::platform::PlatformController>();
 
         platform->register_platform_event_observer(std::move(player_observer));
-
-        platform->set_enable_cursor(false);
     }
 
     void PlayerController::player_movement_keyboard() {
-        auto platfrom = engine::core::Controller::get<engine::platform::PlatformController>();
+        auto gui_controller = engine::core::Controller::get<GuiController>();
+        auto platfrom       = engine::core::Controller::get<engine::platform::PlatformController>();
+        if (gui_controller->is_enabled()) {
+            platfrom->set_enable_cursor(true);
+            return;
+        } else {
+            platfrom->set_enable_cursor(false);
+        }
         auto graphics = engine::core::Controller::get<engine::graphics::GraphicsController>();
         auto camera   = graphics->camera();
         float dt      = platfrom->dt();
