@@ -33,7 +33,7 @@ namespace app {
         graphics->clear_depth_buffer();
         torch_shader->use();
 
-        glm::vec3 light_dir            = glm::vec3(60.0f, 15.0f, 13.0f);
+        glm::vec3 light_dir            = get_light_dir();
         glm::mat4 camera_view          = graphics->camera()->view_matrix();
         glm::vec3 view_space_light_dir = glm::mat3(camera_view) * light_dir;
 
@@ -100,13 +100,17 @@ namespace app {
         auto resources                   = engine::core::Controller::get<engine::resources::ResourcesController>();
         engine::resources::Shader *basic = resources->shader("basic");
 
+        get_current_skybox() == "day_skybox"
+            ? set_lighting_parameters(glm::vec3(0.3f, 0.35f, 0.4f), glm::vec3(1.0f, 0.95f, 0.8f))
+            : set_lighting_parameters(glm::vec3(0.05f, 0.06f, 0.12f), glm::vec3(0.2f, 0.25f, 0.45f));
+
         basic->use();
 
-        basic->set_vec3("lightDir", glm::vec3(60.0f, 40.0f, 13.0f));
+        basic->set_vec3("lightDir", get_light_dir());
 
-        basic->set_vec3("lightColor", glm::vec3(1.0f, 0.95f, 0.8f));
+        basic->set_vec3("lightColor", get_light_color());
 
-        basic->set_vec3("ambientColor", glm::vec3(0.3f, 0.35f, 0.4f));
+        basic->set_vec3("ambientColor", get_ambient_color());
     }
 
     void SceneController::draw() {

@@ -21,6 +21,23 @@ namespace app {
             return s_current_skybox;
         }
 
+        glm::vec3 get_ambient_color() const {
+            return m_ambient_color;
+        }
+
+        glm::vec3 get_light_dir() const {
+            return m_light_dir;
+        }
+
+        glm::vec3 get_light_color() const {
+            return m_light_color;
+        }
+
+        void set_lighting_parameters(const glm::vec3 &ambient_color, const glm::vec3 &light_color) {
+            m_ambient_color = ambient_color;
+            m_light_color   = light_color;
+        }
+
     private:
         void initialize() override;
 
@@ -41,6 +58,10 @@ namespace app {
         void end_draw() override;
 
         inline static std::string s_current_skybox = "day_skybox";
+        //light_color and ambient_color can be just 0, but I added default day values because the skybox is day by default
+        glm::vec3 m_ambient_color                  = glm::vec3(0.3f, 0.35f, 0.4f);
+        glm::vec3 m_light_color                    = glm::vec3(1.0f, 0.95f, 0.8f);
+        glm::vec3 m_light_dir                      = glm::vec3(60.0f, 40.0f, 13.0f);
     };
 } // app
 
