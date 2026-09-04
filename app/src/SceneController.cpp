@@ -32,6 +32,13 @@ namespace app {
 
         graphics->clear_depth_buffer();
         torch_shader->use();
+
+        glm::vec3 light_dir            = glm::vec3(60.0f, 15.0f, 13.0f);
+        glm::mat4 camera_view          = graphics->camera()->view_matrix();
+        glm::vec3 view_space_light_dir = glm::mat3(camera_view) * light_dir;
+
+        torch_shader->set_vec3("lightDir", view_space_light_dir);
+
         torch_shader->set_mat4("projection", graphics->projection_matrix());
 
         glm::mat4 view = glm::mat4(1.0f);
@@ -89,7 +96,22 @@ namespace app {
         graphics->draw_skybox(shader, skybox);
     }
 
+    void SceneController::setup_lighting() {
+        auto resources                   = engine::core::Controller::get<engine::resources::ResourcesController>();
+        engine::resources::Shader *basic = resources->shader("basic");
+
+        basic->use();
+
+        basic->set_vec3("lightDir", glm::vec3(60.0f, 40.0f, 13.0f));
+
+        basic->set_vec3("lightColor", glm::vec3(1.0f, 0.95f, 0.8f));
+
+        basic->set_vec3("ambientColor", glm::vec3(0.3f, 0.35f, 0.4f));
+    }
+
     void SceneController::draw() {
+        setup_lighting();
+
         draw_jungle();
         draw_temple();
         draw_skybox();
@@ -98,7 +120,7 @@ namespace app {
     }
 
     void SceneController::end_draw() {
-        auto platfrom = engine::core::Controller::get<engine::platform::PlatformController>();
-        platfrom->swap_buffers();
+        auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
+        platform->swap_buffers();
     }
 } // app

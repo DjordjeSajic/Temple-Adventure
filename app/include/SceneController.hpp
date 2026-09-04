@@ -34,6 +34,8 @@ namespace app {
 
         void draw_skybox();
 
+        void setup_lighting();
+
         void draw() override;
 
         void end_draw() override;

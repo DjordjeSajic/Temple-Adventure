@@ -16,7 +16,7 @@ uniform mat4 projection;
 void main()
 {
     FragPos = vec3(model * vec4(aPos, 1.0));
-    Normal = aNormal;
+    Normal = mat3(transpose(inverse(model))) * aNormal;
     TexCoords = aTexCoords;
     gl_Position = projection * view * vec4(FragPos, 1.0);
 }
@@ -25,12 +25,17 @@ void main()
 #version 330 core
 
 out vec4 FragColor;
-
+in vec3 Normal;
 in vec2 TexCoords;
 
 uniform sampler2D texture_diffuse1;
-uniform vec3 material_diffuse;
+
 uniform bool hasTexture;
+
+uniform vec3 material_diffuse;
+uniform vec3 lightDir;
+uniform vec3 lightColor;
+uniform vec3 ambientColor;
 
 void main() {
     vec3 baseColor;
@@ -41,6 +46,14 @@ void main() {
     } else {
         baseColor = material_diffuse;
     }
+    vec3 ambient = ambientColor;
+    vec3 norm = normalize(Normal);
+    vec3 lightDir = normalize(lightDir);
 
-    FragColor = vec4(baseColor, 1.0);
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 diffuse = diff * lightColor;
+
+    vec3 result = (ambient + diffuse) * baseColor;
+
+    FragColor = vec4(result, 1.0);
 }
