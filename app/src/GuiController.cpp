@@ -27,18 +27,29 @@ namespace app {
         graphics->begin_gui();
 
         ImGui::Begin("Temple adventure - menu");
-        if (ImGui::Button("Continue", ImVec2(150, 30))) {
+
+        float button_width = 150.0f;
+        float window_width = ImGui::GetWindowWidth();
+        float centered_x   = (window_width - button_width) * 0.5f;
+        
+        ImGui::SetCursorPosX(centered_x);
+        if (ImGui::Button("Continue", ImVec2(button_width, 30))) {
             set_enable(!is_enabled());
             platform->set_enable_cursor(false);
         }
-        if (ImGui::Button("Change time of day", ImVec2(150, 30))) {
+
+        ImGui::Spacing();
+        ImGui::SetCursorPosX(centered_x);
+        if (ImGui::Button("Change time of day", ImVec2(button_width, 30))) {
             std::string next_skybox = (app::SceneController::get_current_skybox() == "day_skybox")
                                           ? "night_skybox"
                                           : "day_skybox";
             app::SceneController::set_current_skybox(next_skybox);
         }
 
-        if (ImGui::Button("Exit Game", ImVec2(150, 30))) {
+        ImGui::Spacing();
+        ImGui::SetCursorPosX(centered_x);
+        if (ImGui::Button("Exit Game", ImVec2(button_width, 30))) {
             set_gui_exit_game_flag();
         }
 
