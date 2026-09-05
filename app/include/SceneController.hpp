@@ -54,6 +54,14 @@ namespace app {
             return m_torch_swing_time_start;
         }
 
+        void set_light_reach(float light_reach) {
+            m_light_reach = light_reach;
+        }
+
+        float get_light_reach() const {
+            return m_light_reach;
+        }
+
     private:
         void initialize() override;
 
@@ -84,7 +92,9 @@ namespace app {
         glm::vec3 m_light_dir                      = glm::vec3(60.0f, 40.0f, 13.0f);
 
         bool m_torch_lit               = false;
+        //m_toch_swing_time_start can be any negative number I just wanted to put the answer to the universe for reference in my project
         float m_torch_swing_time_start = -42.0f;
+        float m_light_reach=1.0f;
     };
 } // app
 

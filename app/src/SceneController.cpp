@@ -21,10 +21,25 @@ namespace app {
             return;
         }
         auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
+        float light_reach;
+
         if (platform->key(engine::platform::KeyId::KEY_E).state() == engine::platform::Key::State::JustPressed) {
             toggle_torch_lit();
         }
-        if (platform->key(engine::platform::KeyId::MOUSE_BUTTON_LEFT).state() ==
+        if (platform->key(engine::platform::KeyId::KEY_1).is_down()) {
+            light_reach = get_light_reach();
+            light_reach += 0.2f;
+            set_light_reach(light_reach);
+        }
+        if (platform->key(engine::platform::KeyId::KEY_2).is_down()) {
+            light_reach = get_light_reach();
+            light_reach -= 0.2f;
+            if (light_reach < 0.1f)
+                light_reach = 0.1f;
+            set_light_reach(light_reach);
+        }
+
+        if (platform->key(engine::platform::KeyId::KEY_F).state() ==
             engine::platform::Key::State::JustPressed) {
             float current_time             = platform->frame_time().current;
             float elapsed                  = current_time - get_torch_swing_time_start();
@@ -169,8 +184,8 @@ namespace app {
         shader_used->set_vec3("pointLightPos", light_pos_world);
         shader_used->set_vec3("pointLightColor", glm::vec3(1.0f, 0.6f, 0.2f));
         shader_used->set_float("pointLightConstant", 1.0f);
-        shader_used->set_float("pointLightLinear", 0.09f);
-        shader_used->set_float("pointLightQuadratic", 0.032f);
+        shader_used->set_float("pointLightLinear", 0.09f / get_light_reach());
+        shader_used->set_float("pointLightQuadratic", 0.032f / (get_light_reach() * get_light_reach()));
         shader_used->set_bool("torchLit", get_torch_lit_status());
     }
 
