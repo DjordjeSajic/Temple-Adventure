@@ -38,8 +38,20 @@ namespace app {
             m_light_color   = light_color;
         }
 
+        bool get_torch_lit_status() const {
+            return m_torch_lit;
+        }
+
+        void toggle_torch_lit() {
+            m_torch_lit = !m_torch_lit;
+        }
+
     private:
         void initialize() override;
+
+        void torch_action();
+
+        void update() override;
 
         void begin_draw() override;
 
@@ -62,6 +74,8 @@ namespace app {
         glm::vec3 m_ambient_color                  = glm::vec3(0.3f, 0.35f, 0.4f);
         glm::vec3 m_light_color                    = glm::vec3(1.0f, 0.95f, 0.8f);
         glm::vec3 m_light_dir                      = glm::vec3(60.0f, 40.0f, 13.0f);
+
+        bool m_torch_lit = false;
     };
 } // app
 

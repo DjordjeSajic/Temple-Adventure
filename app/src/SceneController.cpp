@@ -4,6 +4,7 @@
 
 #include "../include/SceneController.hpp"
 
+#include <GuiController.hpp>
 #include <engine/graphics/GraphicsController.hpp>
 #include <spdlog/spdlog.h>
 
@@ -11,6 +12,22 @@ namespace app {
     void SceneController::initialize() {
         spdlog::info("SceneController initialized");
         engine::graphics::OpenGL::enable_depth_testing();
+    }
+
+    void SceneController::torch_action() {
+        auto gui_controller = engine::core::Controller::get<GuiController>();
+
+        if (gui_controller->is_enabled()) {
+            return;
+        }
+        auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
+        if (platform->key(engine::platform::KeyId::KEY_F).state() == engine::platform::Key::State::JustPressed) {
+            toggle_torch_lit();
+        }
+    }
+
+    void SceneController::update() {
+        torch_action();
     }
 
     void SceneController::begin_draw() {
@@ -28,7 +45,8 @@ namespace app {
         const float offset_x                    = sin(time * sway_speed) * sway_amount;
         const float offset_y                    = cos(time * (sway_speed * 2.0f)) * (sway_amount * 0.5f);
         engine::resources::Model *torch_model   = resources->model("torch");
-        engine::resources::Shader *torch_shader = resources->shader("torch_on");
+        engine::resources::Shader *torch_shader = resources->shader(
+            get_torch_lit_status() ? "torch_on" : "basic");
 
         graphics->clear_depth_buffer();
         torch_shader->use();
@@ -50,7 +68,6 @@ namespace app {
         model           = glm::scale(model, glm::vec3(0.8f));
 
         torch_shader->set_mat4("model", model);
-
         torch_model->draw(torch_shader);
     }
 
@@ -68,7 +85,6 @@ namespace app {
         model           = glm::translate(model, glm::vec3(17.0f, 0.8f, 8.5f));
         model           = glm::scale(model, glm::vec3(18.0f));
         temple_shader->set_mat4("model", model);
-
         temple_model->draw(temple_shader);
     }
 
@@ -128,7 +144,7 @@ namespace app {
         shader_used->set_float("pointLightConstant", 1.0f);
         shader_used->set_float("pointLightLinear", 0.09f);
         shader_used->set_float("pointLightQuadratic", 0.032f);
-        shader_used->set_bool("torchLit", true);
+        shader_used->set_bool("torchLit", get_torch_lit_status());
     }
 
     void SceneController::draw() {
