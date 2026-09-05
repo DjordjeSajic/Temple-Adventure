@@ -21,7 +21,7 @@ namespace app {
             return;
         }
         auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
-        if (platform->key(engine::platform::KeyId::KEY_F).state() == engine::platform::Key::State::JustPressed) {
+        if (platform->key(engine::platform::KeyId::KEY_E).state() == engine::platform::Key::State::JustPressed) {
             toggle_torch_lit();
         }
     }
