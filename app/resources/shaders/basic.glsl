@@ -25,6 +25,7 @@ void main()
 #version 330 core
 
 out vec4 FragColor;
+in vec3 FragPos;
 in vec3 Normal;
 in vec2 TexCoords;
 
@@ -37,6 +38,13 @@ uniform vec3 lightDir;
 uniform vec3 lightColor;
 uniform vec3 ambientColor;
 
+uniform vec3 pointLightPos;
+uniform vec3 pointLightColor;
+uniform float pointLightConstant;
+uniform float pointLightLinear;
+uniform float pointLightQuadratic;
+uniform bool torchLit;
+
 void main() {
     vec3 baseColor;
 
@@ -46,14 +54,26 @@ void main() {
     } else {
         baseColor = material_diffuse;
     }
-    vec3 ambient = ambientColor;
     vec3 norm = normalize(Normal);
-    vec3 lightDir = normalize(lightDir);
+    vec3 ambient = ambientColor;
 
-    float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = diff * lightColor;
+    vec3 lightDirNorm = normalize(lightDir);
+    float diffDir = max(dot(norm, lightDirNorm), 0.0);
+    vec3 diffuseDir = diffDir * lightColor;
 
-    vec3 result = (ambient + diffuse) * baseColor;
+    vec3 diffusePoint = vec3(0.0);
+    if (torchLit) {
+        vec3 lightDirPoint = normalize(pointLightPos - FragPos);
+        float diffPoint = max(dot(norm, lightDirPoint), 0.0);
+
+        float distance = length(pointLightPos - FragPos);
+        float attenuation = 1.0 / (pointLightConstant + pointLightLinear * distance + pointLightQuadratic * (distance * distance));
+
+        diffusePoint = diffPoint * pointLightColor * attenuation;
+    }
+
+    vec3 result = (ambient + diffuseDir + diffusePoint) * baseColor;
 
     FragColor = vec4(result, 1.0);
+
 }

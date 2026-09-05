@@ -28,7 +28,7 @@ namespace app {
         const float offset_x                    = sin(time * sway_speed) * sway_amount;
         const float offset_y                    = cos(time * (sway_speed * 2.0f)) * (sway_amount * 0.5f);
         engine::resources::Model *torch_model   = resources->model("torch");
-        engine::resources::Shader *torch_shader = resources->shader("basic");
+        engine::resources::Shader *torch_shader = resources->shader("torch_on");
 
         graphics->clear_depth_buffer();
         torch_shader->use();
@@ -48,7 +48,9 @@ namespace app {
         model           = glm::translate(model, glm::vec3(1.3f + offset_x, -1.5f + offset_y, -3.0f));
         model           = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         model           = glm::scale(model, glm::vec3(0.8f));
+
         torch_shader->set_mat4("model", model);
+
         torch_model->draw(torch_shader);
     }
 
@@ -97,20 +99,36 @@ namespace app {
     }
 
     void SceneController::setup_lighting() {
-        auto resources                   = engine::core::Controller::get<engine::resources::ResourcesController>();
-        engine::resources::Shader *basic = resources->shader("basic");
+        auto resources = engine::core::Controller::get<engine::resources::ResourcesController>();
+        auto graphics  = engine::core::Controller::get<engine::graphics::GraphicsController>();
+
+        engine::resources::Shader *shader_used = resources->shader("basic");
 
         get_current_skybox() == "day_skybox"
             ? set_lighting_parameters(glm::vec3(0.3f, 0.35f, 0.4f), glm::vec3(1.0f, 0.95f, 0.8f))
             : set_lighting_parameters(glm::vec3(0.05f, 0.06f, 0.12f), glm::vec3(0.2f, 0.25f, 0.45f));
 
-        basic->use();
+        shader_used->use();
 
-        basic->set_vec3("lightDir", get_light_dir());
+        shader_used->set_vec3("lightDir", get_light_dir());
 
-        basic->set_vec3("lightColor", get_light_color());
+        shader_used->set_vec3("lightColor", get_light_color());
 
-        basic->set_vec3("ambientColor", get_ambient_color());
+        shader_used->set_vec3("ambientColor", get_ambient_color());
+
+        glm::mat4 camera_view     = graphics->camera()->view_matrix();
+        glm::mat4 camera_inv_view = glm::inverse(camera_view);
+        glm::vec3 light_pos_view(0.1f, 0.0f, -0.1f);
+
+        glm::vec3 light_pos_world =
+                glm::vec3(camera_inv_view * glm::vec4(light_pos_view, 1.0f));
+
+        shader_used->set_vec3("pointLightPos", light_pos_world);
+        shader_used->set_vec3("pointLightColor", glm::vec3(1.0f, 0.6f, 0.2f));
+        shader_used->set_float("pointLightConstant", 1.0f);
+        shader_used->set_float("pointLightLinear", 0.09f);
+        shader_used->set_float("pointLightQuadratic", 0.032f);
+        shader_used->set_bool("torchLit", true);
     }
 
     void SceneController::draw() {
