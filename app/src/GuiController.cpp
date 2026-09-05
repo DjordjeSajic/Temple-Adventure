@@ -16,8 +16,15 @@ namespace app {
     void GuiController::poll_events() {
         auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
         if (platform->key(engine::platform::KeyId::KEY_TAB).state() == engine::platform::Key::State::JustPressed) {
-            set_enable(true);
-            platform->set_enable_cursor(true);
+            auto scene_controller = engine::core::Controller::get<app::SceneController>();
+
+            float current_time                   = platform->frame_time().current;
+            float elapsed                        = current_time - scene_controller->get_torch_swing_time_start();
+            constexpr float total_swing_duration = 1.5f;
+            if (elapsed > total_swing_duration) {
+                set_enable(true);
+                platform->set_enable_cursor(true);
+            }
         }
     }
 
@@ -31,7 +38,7 @@ namespace app {
         float button_width = 150.0f;
         float window_width = ImGui::GetWindowWidth();
         float centered_x   = (window_width - button_width) * 0.5f;
-        
+
         ImGui::SetCursorPosX(centered_x);
         if (ImGui::Button("Continue", ImVec2(button_width, 30))) {
             set_enable(!is_enabled());

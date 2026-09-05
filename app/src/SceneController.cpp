@@ -24,6 +24,15 @@ namespace app {
         if (platform->key(engine::platform::KeyId::KEY_E).state() == engine::platform::Key::State::JustPressed) {
             toggle_torch_lit();
         }
+        if (platform->key(engine::platform::KeyId::MOUSE_BUTTON_LEFT).state() ==
+            engine::platform::Key::State::JustPressed) {
+            float current_time             = platform->frame_time().current;
+            float elapsed                  = current_time - get_torch_swing_time_start();
+            constexpr float total_duration = 1.5f;
+            if (elapsed > total_duration) {
+                set_torch_swing_time_start(current_time);
+            }
+        }
     }
 
     void SceneController::update() {
@@ -39,11 +48,12 @@ namespace app {
         auto graphics  = engine::core::Controller::get<engine::graphics::GraphicsController>();
         auto platform  = engine::core::Controller::get<engine::platform::PlatformController>();
 
-        float time                              = platform->frame_time().current;
-        constexpr float sway_amount             = 0.05f;
-        constexpr float sway_speed              = 1.5f;
-        const float offset_x                    = sin(time * sway_speed) * sway_amount;
-        const float offset_y                    = cos(time * (sway_speed * 2.0f)) * (sway_amount * 0.5f);
+        float time                  = platform->frame_time().current;
+        constexpr float sway_amount = 0.05f;
+        constexpr float sway_speed  = 1.5f;
+        const float offset_x        = sin(time * sway_speed) * sway_amount;
+        const float offset_y        = cos(time * (sway_speed * 2.0f)) * (sway_amount * 0.5f);
+
         engine::resources::Model *torch_model   = resources->model("torch");
         engine::resources::Shader *torch_shader = resources->shader(
             get_torch_lit_status() ? "torch_on" : "basic");
@@ -62,9 +72,26 @@ namespace app {
         glm::mat4 view = glm::mat4(1.0f);
         torch_shader->set_mat4("view", view);
 
+        constexpr float total_duration = 1.5f;
+
+        float elapsed = time - get_torch_swing_time_start();
+
+        float swing_deg = 0.0f;
+
+        if (elapsed >= 0.0f && elapsed < total_duration) {
+            if (elapsed < 0.25f) {
+                swing_deg = glm::mix(0.0f, -45.0f, elapsed / 0.25f);
+            } else if (elapsed < 1.25f) {
+                swing_deg = -45.0f;
+            } else {
+                swing_deg = glm::mix(-45.0f, 0.0f, (elapsed - 1.25f) / 0.25f);
+            }
+        }
+
         glm::mat4 model = glm::mat4(1.0f);
         model           = glm::translate(model, glm::vec3(1.3f + offset_x, -1.5f + offset_y, -3.0f));
         model           = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model           = glm::rotate(model, glm::radians(swing_deg), glm::vec3(1.0f, 0.0f, 0.0f));
         model           = glm::scale(model, glm::vec3(0.8f));
 
         torch_shader->set_mat4("model", model);

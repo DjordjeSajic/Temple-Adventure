@@ -46,6 +46,14 @@ namespace app {
             m_torch_lit = !m_torch_lit;
         }
 
+        void set_torch_swing_time_start(float time_start) {
+            m_torch_swing_time_start = time_start;
+        }
+
+        float get_torch_swing_time_start() const {
+            return m_torch_swing_time_start;
+        }
+
     private:
         void initialize() override;
 
@@ -75,7 +83,8 @@ namespace app {
         glm::vec3 m_light_color                    = glm::vec3(1.0f, 0.95f, 0.8f);
         glm::vec3 m_light_dir                      = glm::vec3(60.0f, 40.0f, 13.0f);
 
-        bool m_torch_lit = false;
+        bool m_torch_lit               = false;
+        float m_torch_swing_time_start = -42.0f;
     };
 } // app
 
