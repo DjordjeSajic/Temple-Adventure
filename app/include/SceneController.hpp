@@ -94,7 +94,7 @@ namespace app {
         bool m_torch_lit               = false;
         //m_toch_swing_time_start can be any negative number I just wanted to put the answer to the universe for reference in my project
         float m_torch_swing_time_start = -42.0f;
-        float m_light_reach=1.0f;
+        float m_light_reach            = 1.0f;
     };
 } // app
 
