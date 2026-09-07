@@ -7,9 +7,9 @@
 #include <engine/core/Engine.hpp>
 
 namespace app {
-    class TempleAdventure : public engine::core::App {
-        void app_setup() override;
-    };
-} // app
+class TempleAdventure : public engine::core::App {
+    void app_setup() override;
+};
+}// namespace app
 
-#endif //MATF_RG_PROJECT_TEMPLEADVENTURE_HPP
+#endif//MATF_RG_PROJECT_TEMPLEADVENTURE_HPP

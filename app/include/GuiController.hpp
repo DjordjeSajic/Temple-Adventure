@@ -7,25 +7,25 @@
 #include <engine/core/Engine.hpp>
 
 namespace app {
-    class GuiController : public engine::core::Controller {
-    public:
-        std::string_view name() const override {
-            return "app::GuiController";
-        }
+class GuiController : public engine::core::Controller {
+public:
+    std::string_view name() const override {
+        return "app::GuiController";
+    }
 
-    private:
-        void initialize() override;
+private:
+    void initialize() override;
 
-        void poll_events() override;
+    void poll_events() override;
 
-        void draw() override;
+    void draw() override;
 
-        void set_gui_exit_game_flag();
+    void set_gui_exit_game_flag();
 
-        bool loop() override;
+    bool loop() override;
 
-        bool m_gui_exit_game = false;
-    };
-} // app
+    bool m_gui_exit_game = false;
+};
+}// namespace app
 
-#endif //MATF_RG_PROJECT_GUICONTROLLER_HPP
+#endif//MATF_RG_PROJECT_GUICONTROLLER_HPP

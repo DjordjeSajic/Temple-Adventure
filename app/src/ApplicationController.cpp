@@ -7,15 +7,15 @@
 #include <spdlog/spdlog.h>
 
 namespace app {
-    void ApplicationController::initialize() {
-        spdlog::info("ApplicationController initialized");
-    }
+void ApplicationController::initialize() {
+    spdlog::info("ApplicationController initialized");
+}
 
-    bool ApplicationController::loop() {
-        auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
-        if (platform->key(engine::platform::KeyId::KEY_ESCAPE).is_down()) {
-            return false;
-        }
-        return true;
+bool ApplicationController::loop() {
+    auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
+    if (platform->key(engine::platform::KeyId::KEY_ESCAPE).is_down()) {
+        return false;
     }
-} // app
+    return true;
+}
+}// namespace app

@@ -7,17 +7,17 @@
 #include <engine/core/Engine.hpp>
 
 namespace app {
-    class ApplicationController : public engine::core::Controller {
-    public:
-        std::string_view name() const override {
-            return "app::ApplicationController";
-        }
+class ApplicationController : public engine::core::Controller {
+public:
+    std::string_view name() const override {
+        return "app::ApplicationController";
+    }
 
-    private:
-        bool loop() override;
+private:
+    bool loop() override;
 
-        void initialize() override;
-    };
-} // app
+    void initialize() override;
+};
+}// namespace app
 
-#endif //MATF_RG_PROJECT_APPLICATIONCONTROLLER_HPP
+#endif//MATF_RG_PROJECT_APPLICATIONCONTROLLER_HPP
