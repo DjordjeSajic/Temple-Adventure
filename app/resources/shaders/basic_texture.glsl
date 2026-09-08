@@ -31,9 +31,6 @@ in vec2 TexCoords;
 
 uniform sampler2D texture_diffuse1;
 
-uniform bool hasTexture;
-
-uniform vec3 material_diffuse;
 uniform vec3 lightDir;
 uniform vec3 lightColor;
 uniform vec3 ambientColor;
@@ -48,12 +45,7 @@ uniform bool torchLit;
 void main() {
     vec3 baseColor;
 
-    // Pick texture if available, otherwise fallback to material diffuse color
-    if (hasTexture) {
-        baseColor = texture(texture_diffuse1, TexCoords).rgb;
-    } else {
-        baseColor = material_diffuse;
-    }
+    baseColor = texture(texture_diffuse1, TexCoords).rgb;
     vec3 norm = normalize(Normal);
     vec3 ambient = ambientColor;
 

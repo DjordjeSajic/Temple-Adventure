@@ -66,7 +66,7 @@ void SceneController::draw_torch() {
 
     engine::resources::Model *torch_model = resources->model("torch");
     engine::resources::Shader *torch_shader = resources->shader(
-            get_torch_lit_status() ? "torch_on" : "basic");
+            get_torch_lit_status() ? "torch_on" : "basic_color");
 
     graphics->clear_depth_buffer();
     torch_shader->use();
@@ -113,7 +113,7 @@ void SceneController::draw_temple() {
     auto graphics = engine::core::Controller::get<engine::graphics::GraphicsController>();
 
     engine::resources::Model *temple_model = resources->model("temple");
-    engine::resources::Shader *temple_shader = resources->shader("basic");
+    engine::resources::Shader *temple_shader = resources->shader("basic_color");
 
     temple_shader->use();
     temple_shader->set_mat4("projection", graphics->projection_matrix());
@@ -130,7 +130,7 @@ void SceneController::draw_jungle() {
     auto graphics = engine::core::Controller::get<engine::graphics::GraphicsController>();
 
     engine::resources::Model *jungle_model = resources->model("jungle");
-    engine::resources::Shader *jungle_shader = resources->shader("basic");
+    engine::resources::Shader *jungle_shader = resources->shader("basic_color");
 
     jungle_shader->use();
     jungle_shader->set_mat4("projection", graphics->projection_matrix());
@@ -155,7 +155,7 @@ void SceneController::setup_lighting() {
     auto resources = engine::core::Controller::get<engine::resources::ResourcesController>();
     auto graphics = engine::core::Controller::get<engine::graphics::GraphicsController>();
 
-    engine::resources::Shader *shader_used = resources->shader("basic");
+    engine::resources::Shader *shader_used = resources->shader("basic_color");
 
     get_current_skybox() == "day_skybox"
             ? set_lighting_parameters(glm::vec3(0.3f, 0.35f, 0.4f), glm::vec3(1.0f, 0.95f, 0.8f))
