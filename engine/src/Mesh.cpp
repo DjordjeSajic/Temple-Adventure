@@ -55,11 +55,7 @@ Mesh::Mesh(const std::vector<Vertex> &vertices, const std::vector<uint32_t> &ind
 }
 
 void Mesh::draw(const Shader *shader) {
-    // Test if shader exists
-    bool has_texture = !m_textures.empty();
-    shader->set_bool("hasTexture", has_texture);
-
-    // 2. Send material colors to m_diffuse_color
+    //Send material colors to m_diffuse_color
     shader->set_vec3("material_diffuse", m_diffuse_color);
 
     std::unordered_map<std::string_view, uint32_t> counts;
