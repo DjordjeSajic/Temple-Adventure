@@ -2,7 +2,7 @@
 // Created by djordjes on 8/4/26.
 //
 
-#include "../include/ApplicationController.hpp"
+#include <ApplicationController.hpp>
 
 #include <spdlog/spdlog.h>
 

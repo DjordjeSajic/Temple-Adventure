@@ -2,12 +2,11 @@
 // Created by djordjes on 8/4/26.
 //
 
-#include "../include/TempleAdventure.hpp"
-
 #include <ApplicationController.hpp>
 #include <GuiController.hpp>
 #include <PlayerController.hpp>
 #include <SceneController.hpp>
+#include <TempleAdventure.hpp>
 #include <spdlog/spdlog.h>
 
 namespace app {

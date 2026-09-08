@@ -2,9 +2,9 @@
 // Created by djordjes on 8/12/26.
 //
 
-#include "../include/PlayerController.hpp"
-
 #include <GuiController.hpp>
+#include <PlayerController.hpp>
+#include <engine/core/Engine.hpp>
 #include <engine/graphics/GraphicsController.hpp>
 #include <spdlog/spdlog.h>
 

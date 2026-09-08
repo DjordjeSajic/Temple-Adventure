@@ -2,9 +2,9 @@
 // Created by djordjes on 9/3/26.
 //
 
-#include "../include/GuiController.hpp"
-
+#include <GuiController.hpp>
 #include <SceneController.hpp>
+#include <engine/core/Engine.hpp>
 #include <engine/graphics/GraphicsController.hpp>
 #include <imgui.h>
 

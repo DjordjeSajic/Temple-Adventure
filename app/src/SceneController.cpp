@@ -2,9 +2,9 @@
 // Created by djordjes on 8/4/26.
 //
 
-#include "../include/SceneController.hpp"
-
 #include <GuiController.hpp>
+#include <SceneController.hpp>
+#include <engine/core/Engine.hpp>
 #include <engine/graphics/GraphicsController.hpp>
 #include <spdlog/spdlog.h>
 
