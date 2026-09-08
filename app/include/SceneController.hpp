@@ -59,7 +59,9 @@ namespace app {
         }
 
         void increase_light_reach(float light_reach_inc_factor) {
-            m_light_reach += light_reach_inc_factor;
+            m_light_reach = ((m_light_reach + light_reach_inc_factor > 2.0f))
+                                ? 2.0f
+                                : (m_light_reach + light_reach_inc_factor);
         }
 
         void decrease_light_reach(float light_reach_dec_factor) {
