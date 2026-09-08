@@ -21,22 +21,17 @@ void SceneController::torch_action() {
         return;
     }
     auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
-    float light_reach;
 
     if (platform->key(engine::platform::KeyId::KEY_E).state() == engine::platform::Key::State::JustPressed) {
         toggle_torch_lit();
     }
-    if (platform->key(engine::platform::KeyId::KEY_1).is_down()) {
-        light_reach = get_light_reach();
-        light_reach += 0.2f;
-        set_light_reach(light_reach);
-    }
-    if (platform->key(engine::platform::KeyId::KEY_2).is_down()) {
-        light_reach = get_light_reach();
-        light_reach -= 0.2f;
-        if (light_reach < 0.1f)
-            light_reach = 0.1f;
-        set_light_reach(light_reach);
+    if (get_torch_lit_status()) {
+        if (platform->key(engine::platform::KeyId::KEY_1).is_down()) {
+            increase_light_reach(0.2f);
+        }
+        if (platform->key(engine::platform::KeyId::KEY_2).is_down()) {
+            decrease_light_reach(0.2f);
+        }
     }
 
     if (platform->key(engine::platform::KeyId::KEY_F).state() ==
