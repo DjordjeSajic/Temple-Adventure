@@ -1,4 +1,3 @@
-
 // clang-format off
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -11,7 +10,6 @@
 #include <imgui_impl_opengl3.h>
 
 namespace engine::graphics {
-
 void GraphicsController::initialize() {
     const int opengl_initialized = gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
     RG_GUARANTEE(opengl_initialized, "OpenGL failed to init!");
@@ -55,6 +53,10 @@ void GraphicsPlatformEventObserver::on_window_resize(int width, int height) {
     m_graphics->orthographic_params().Right = static_cast<float>(width);
     m_graphics->orthographic_params().Top = static_cast<float>(height);
     CHECKED_GL_CALL(glViewport, 0, 0, width, height);
+}
+
+void GraphicsController::clear_depth_buffer() const {
+    glClear(GL_DEPTH_BUFFER_BIT);
 }
 
 std::string_view GraphicsController::name() const {
