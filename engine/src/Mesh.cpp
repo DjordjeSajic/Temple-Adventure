@@ -9,7 +9,8 @@
 
 namespace engine::resources {
 Mesh::Mesh(const std::vector<Vertex> &vertices, const std::vector<uint32_t> &indices,
-           std::vector<Texture *> textures, glm::vec3 diffuse_color) {
+           std::vector<Texture *> textures, glm::vec3 diffuse_color,
+           std::string diffuse_uniform_name) {
     // NOLINTBEGIN
     static_assert(std::is_trivial_v<Vertex>);
     uint32_t VAO, VBO, EBO;
@@ -52,11 +53,11 @@ Mesh::Mesh(const std::vector<Vertex> &vertices, const std::vector<uint32_t> &ind
     m_num_indices = indices.size();
     m_textures = std::move(textures);
     m_diffuse_color = diffuse_color;
+    m_diffuse_uniform_name = std::move(diffuse_uniform_name);
 }
 
 void Mesh::draw(const Shader *shader) {
-    //Send material colors to m_diffuse_color
-    shader->set_vec3("material_diffuse", m_diffuse_color);
+    shader->set_vec3(m_diffuse_uniform_name, m_diffuse_color);
 
     std::unordered_map<std::string_view, uint32_t> counts;
     std::string uniform_name;

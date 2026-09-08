@@ -12,9 +12,9 @@
 
 namespace engine::resources {
 /**
-    * @struct Vertex
-    * @brief Represents a vertex in the mesh.
-    */
+        * @struct Vertex
+        * @brief Represents a vertex in the mesh.
+        */
 struct Vertex {
     glm::vec3 Position;
     glm::vec3 Normal;
@@ -25,38 +25,40 @@ struct Vertex {
 };
 
 /**
-    * @class Mesh
-    * @brief Represents a mesh in the model in the OpenGL context.
-    */
+        * @class Mesh
+        * @brief Represents a mesh in the model in the OpenGL context.
+        */
 class Mesh {
     friend class AssimpSceneProcessor;
 
 public:
     /**
-        * @brief Draws the mesh using a given shader. Called by the @ref Model::draw function to draw all the meshes in the model.
-        * @param shader The shader to use for drawing.
-        */
+            * @brief Draws the mesh using a given shader. Called by the @ref Model::draw function to draw all the meshes in the model.
+            * @param shader The shader to use for drawing.
+            */
     void draw(const Shader *shader);
 
     /**
-        * @brief Destroys the mesh in the OpenGL context.
-        */
+            * @brief Destroys the mesh in the OpenGL context.
+            */
     void destroy();
 
 private:
     /**
-        * @brief Constructs a Mesh object.
-        * @param vertices The vertices in the mesh.
-        * @param indices The indices in the mesh.
-        * @param textures The textures in the mesh.
-         */
+            * @brief Constructs a Mesh object.
+            * @param vertices The vertices in the mesh.
+            * @param indices The indices in the mesh.
+            * @param textures The textures in the mesh.
+             */
     Mesh(const std::vector<Vertex> &vertices, const std::vector<uint32_t> &indices,
-         std::vector<Texture *> textures, glm::vec3 diffuse_color = glm::vec3(1.0f));
+         std::vector<Texture *> textures, glm::vec3 diffuse_color = glm::vec3(1.0f),
+         std::string diffuse_uniform_name = "material_diffuse");
 
     uint32_t m_vao{0};
     uint32_t m_num_indices{0};
     std::vector<Texture *> m_textures;
     glm::vec3 m_diffuse_color{1.0f, 1.0f, 1.0f};
+    std::string m_diffuse_uniform_name;
 };
 }// namespace engine::resources
 
