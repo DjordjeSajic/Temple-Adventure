@@ -56,6 +56,11 @@ enum ProjectionType {
 */
 class GraphicsController final : public core::Controller {
 public:
+    /**
+     * @brief Clears the depth buffer so subsequent draws render on top of previous ones.
+     */
+    void clear_depth_buffer() const;
+
     std::string_view name() const override;
 
     /**

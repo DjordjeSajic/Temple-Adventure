@@ -1,4 +1,3 @@
-
 // clang-format off
 #include <glad/glad.h>
 // clang-format on
@@ -9,9 +8,9 @@
 #include <unordered_map>
 
 namespace engine::resources {
-
 Mesh::Mesh(const std::vector<Vertex> &vertices, const std::vector<uint32_t> &indices,
-           std::vector<Texture *> textures) {
+           std::vector<Texture *> textures, glm::vec3 diffuse_color,
+           std::string diffuse_uniform_name) {
     // NOLINTBEGIN
     static_assert(std::is_trivial_v<Vertex>);
     uint32_t VAO, VBO, EBO;
@@ -21,34 +20,45 @@ Mesh::Mesh(const std::vector<Vertex> &vertices, const std::vector<uint32_t> &ind
 
     CHECKED_GL_CALL(glBindVertexArray, VAO);
     CHECKED_GL_CALL(glBindBuffer, GL_ARRAY_BUFFER, VBO);
-    CHECKED_GL_CALL(glBufferData, GL_ARRAY_BUFFER, vertices.size() * sizeof(vertices[0]), vertices.data(), GL_STATIC_DRAW);
+    CHECKED_GL_CALL(glBufferData, GL_ARRAY_BUFFER, vertices.size() * sizeof(vertices[0]), vertices.data(),
+                    GL_STATIC_DRAW);
 
     CHECKED_GL_CALL(glBindBuffer, GL_ELEMENT_ARRAY_BUFFER, EBO);
-    CHECKED_GL_CALL(glBufferData, GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(indices[0]), indices.data(), GL_STATIC_DRAW);
+    CHECKED_GL_CALL(glBufferData, GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(indices[0]), indices.data(),
+                    GL_STATIC_DRAW);
 
     CHECKED_GL_CALL(glEnableVertexAttribArray, 0);
-    CHECKED_GL_CALL(glVertexAttribPointer, 0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) offsetof(Vertex, Position));
+    CHECKED_GL_CALL(glVertexAttribPointer, 0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+                    (void *) offsetof(Vertex, Position));
 
     CHECKED_GL_CALL(glEnableVertexAttribArray, 1);
-    CHECKED_GL_CALL(glVertexAttribPointer, 1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) offsetof(Vertex, Normal));
+    CHECKED_GL_CALL(glVertexAttribPointer, 1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+                    (void *) offsetof(Vertex, Normal));
 
     CHECKED_GL_CALL(glEnableVertexAttribArray, 2);
-    CHECKED_GL_CALL(glVertexAttribPointer, 2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) offsetof(Vertex, TexCoords));
+    CHECKED_GL_CALL(glVertexAttribPointer, 2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+                    (void *) offsetof(Vertex, TexCoords));
 
     CHECKED_GL_CALL(glEnableVertexAttribArray, 3);
-    CHECKED_GL_CALL(glVertexAttribPointer, 3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) offsetof(Vertex, Tangent));
+    CHECKED_GL_CALL(glVertexAttribPointer, 3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+                    (void *) offsetof(Vertex, Tangent));
 
     CHECKED_GL_CALL(glEnableVertexAttribArray, 4);
-    CHECKED_GL_CALL(glVertexAttribPointer, 4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) offsetof(Vertex, Bitangent));
+    CHECKED_GL_CALL(glVertexAttribPointer, 4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+                    (void *) offsetof(Vertex, Bitangent));
 
     CHECKED_GL_CALL(glBindVertexArray, 0);
     // NOLINTEND
     m_vao = VAO;
     m_num_indices = indices.size();
     m_textures = std::move(textures);
+    m_diffuse_color = diffuse_color;
+    m_diffuse_uniform_name = std::move(diffuse_uniform_name);
 }
 
 void Mesh::draw(const Shader *shader) {
+    shader->set_vec3(m_diffuse_uniform_name, m_diffuse_color);
+
     std::unordered_map<std::string_view, uint32_t> counts;
     std::string uniform_name;
     uniform_name.reserve(32);
@@ -70,5 +80,4 @@ void Mesh::draw(const Shader *shader) {
 void Mesh::destroy() {
     CHECKED_GL_CALL(glDeleteVertexArrays, 1, &m_vao);
 }
-
 }// namespace engine::resources
